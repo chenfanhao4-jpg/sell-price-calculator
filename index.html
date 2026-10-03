@@ -4,8 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f8f5">
-  <meta name="description" content="免费在线商品定价计算器。输入成本、平台费率和目标利润，快速估算建议售价、单件利润和盈亏平衡售价。">
-  <title>卖价计算器｜算清成本，再定售价</title>
+  <meta name="description" content="免费电商利润计算器：输入商品成本、运费、平台费、广告、达人佣金和售后损耗，估算建议售价、单件利润和保本价。数据只在本机浏览器计算。">
+  <meta name="keywords" content="电商利润计算器,商品定价计算器,卖价计算器,保本售价计算器,单件利润计算">
+  <link rel="canonical" href="https://sell-price-calculator.onrender.com/">
+  <meta property="og:title" content="电商利润计算器｜算清成本，再定售价">
+  <meta property="og:description" content="把平台费、广告、达人佣金和售后损耗都算进每一单。免费使用，数据不上传。">
+  <meta property="og:type" content="website">
+  <title>电商利润计算器｜算清成本，再定售价</title>
   <style>
     :root{--ink:#172b24;--muted:#68776f;--line:#dce5de;--bg:#f5f8f4;--green:#176b4a;--mint:#e7f3eb;--white:#fff;--amber:#fff4d9;--shadow:0 20px 55px #153b2912}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5}
@@ -20,7 +25,7 @@
 <body>
   <main class="wrap">
     <header class="top"><div class="brand">算算<span>·</span>卖价</div><div class="tag">免费工具 · 数据只在你的浏览器中计算</div></header>
-    <section class="hero"><div class="eyebrow">SELLING PRICE CALCULATOR</div><h1>别凭感觉定价，<br>先把利润算清楚。</h1><p>填入每件成本和经营费用，立即估算建议售价、单件利润与保本价。适合电商卖家快速做定价参考。</p></section>
+    <section class="hero"><div class="eyebrow">ECOMMERCE PROFIT CALCULATOR</div><h1>别凭感觉定价，<br>先把每单利润算清楚。</h1><p>平台扣点、广告、达人佣金和售后损耗都可能吃掉利润。填入自己的真实费率，估算建议售价、单件利润与保本价。</p></section>
     <section class="layout" aria-label="商品售价计算器">
       <div class="card"><h2>填写商品与费用</h2><div class="fields">
         <div class="field"><label for="cost">商品进货成本</label><div class="unit"><input id="cost" type="number" min="0" step="0.01" value="35"><b>元</b></div></div>
@@ -28,29 +33,31 @@
         <div class="field"><label for="packaging">包装及耗材</label><div class="unit"><input id="packaging" type="number" min="0" step="0.01" value="1"><b>元</b></div></div>
         <div class="field"><label for="other">其他单件成本</label><div class="unit"><input id="other" type="number" min="0" step="0.01" value="0"><b>元</b></div></div>
         <div class="field"><label for="fee">平台及支付费率 <span class="hint">按成交额</span></label><div class="unit"><input id="fee" type="number" min="0" max="99" step="0.1" value="5"><b>%</b></div></div>
-        <div class="field"><label for="ads">推广费率 <span class="hint">按成交额</span></label><div class="unit"><input id="ads" type="number" min="0" max="99" step="0.1" value="8"><b>%</b></div></div>
+        <div class="field"><label for="ads">广告推广费率 <span class="hint">按成交额</span></label><div class="unit"><input id="ads" type="number" min="0" max="99" step="0.1" value="8"><b>%</b></div></div>
+        <div class="field"><label for="commission">达人/联盟佣金率 <span class="hint">没有则填 0</span></label><div class="unit"><input id="commission" type="number" min="0" max="99" step="0.1" value="0"><b>%</b></div></div>
+        <div class="field"><label for="afterSale">退货售后损耗率 <span class="hint">按成交额估算</span></label><div class="unit"><input id="afterSale" type="number" min="0" max="99" step="0.1" value="0"><b>%</b></div></div>
         <div class="field wide"><label for="margin">目标利润率 <span class="hint">按售价计算，扣除以上成本后</span></label><div class="unit"><input id="margin" type="number" min="0" max="99" step="1" value="25"><b>%</b></div></div>
       </div></div>
       <div class="results" aria-live="polite"><h2>建议售价</h2><div class="price"><small>¥</small><span id="suggested">—</span></div><div class="sub" id="targetLine">对应目标利润率 25%</div><div class="divider"></div>
         <div class="metrics"><div class="metric"><span>预计单件利润</span><strong id="profit">—</strong></div><div class="metric"><span>成本合计</span><strong id="totalCost">—</strong></div></div>
         <div class="break"><span>盈亏平衡售价</span><strong id="breakEven">—</strong></div>
-        <div class="formula" id="formula">售价 = 固定单件成本 ÷ (1 − 费率 − 目标利润率)</div>
+        <div class="formula" id="formula">售价 = 固定单件成本 ÷ (1 − 所有比例费用 − 目标利润率)</div>
         <div class="actions"><button class="btn primary" id="copy">复制计算结果</button><button class="btn secondary" id="reset">恢复示例</button></div>
         <div class="note" id="warning">仅作经营估算，请按实际平台费率和退款、税费等情况调整。</div>
       </div>
     </section>
-    <section class="below"><div class="card info"><h3>怎么计算？</h3><p>把进货、运费、包装等视为固定单件成本；平台费和推广费按售价比例扣除。建议售价会反推达到你填写的利润率时需要卖多少钱。</p></div><div class="card info"><h3>数据会上传吗？</h3><p>不会。本页在你的设备浏览器中完成计算，不保存或上传你输入的经营数据。</p></div></section>
-    <footer class="footer"><span>算算·卖价 · 免费定价参考工具</span><span>费率、税费与平台规则可能变化，请以你的实际经营数据为准。</span></footer>
+    <section class="below"><div class="card info"><h3>商品定价计算公式</h3><p>建议售价 = 固定单件成本 ÷（1 − 平台费率 − 广告费率 − 达人佣金率 − 售后损耗率 − 目标利润率）。保本售价则不含目标利润率。</p></div><div class="card info"><h3>数据会上传吗？</h3><p>不会。本页在你的设备浏览器中完成计算，不保存或上传你输入的经营数据，也不隶属于任何电商平台。</p></div><div class="card info" style="grid-column:1/-1"><h3>为什么要算退货和佣金？</h3><p>商品成本和运费只是单笔成本的一部分。广告、平台服务费、达人分佣以及退货产生的损耗都可能降低实际利润。这里的费率需要你按店铺账单自行填写；不同平台、类目、活动和合同的费用会不同，工具不会预填或保证某个固定费率。</p></div></section>
+    <footer class="footer"><span>算算·卖价 · 免费电商利润与定价参考工具</span><span>费率、税费与平台规则可能变化，请以你的实际经营数据为准。</span></footer>
   </main>
   <script>
-    const ids=['cost','shipping','packaging','other','fee','ads','margin'];
+    const ids=['cost','shipping','packaging','other','fee','ads','commission','afterSale','margin'];
     const money=n=>'¥'+(Number.isFinite(n)?n.toFixed(2):'—');
     function calculate(){
       const v=Object.fromEntries(ids.map(id=>[id,Math.max(0,Number(document.getElementById(id).value)||0)]));
-      const fixed=v.cost+v.shipping+v.packaging+v.other, rate=(v.fee+v.ads)/100, margin=v.margin/100, denom=1-rate-margin;
+      const fixed=v.cost+v.shipping+v.packaging+v.other, rate=(v.fee+v.ads+v.commission+v.afterSale)/100, margin=v.margin/100, denom=1-rate-margin;
       document.getElementById('totalCost').textContent=money(fixed);
       document.getElementById('targetLine').textContent='对应目标利润率 '+v.margin.toFixed(1).replace('.0','')+'%';
-      document.getElementById('formula').textContent=`售价 = ${money(fixed)} ÷ (1 − ${rate*100}% 费率 − ${v.margin}% 目标利润率)`;
+      document.getElementById('formula').textContent=`售价 = ${money(fixed)} ÷ (1 − ${rate*100}% 比例费用 − ${v.margin}% 目标利润率)`;
       const warning=document.getElementById('warning');
       if(denom<=0){document.getElementById('suggested').textContent='无法计算';document.getElementById('profit').textContent='—';document.getElementById('breakEven').textContent='—';warning.textContent='平台费率、推广费率和目标利润率之和必须小于 100%，请调整输入。';return}
       const price=fixed/denom, profit=price*margin, even=rate<1?fixed/(1-rate):Infinity;
@@ -58,7 +65,7 @@
       warning.textContent='仅作经营估算，请按实际平台费率和退款、税费等情况调整。';
     }
     ids.forEach(id=>document.getElementById(id).addEventListener('input',calculate));
-    document.getElementById('reset').addEventListener('click',()=>{['35','5','1','0','5','8','25'].forEach((v,i)=>document.getElementById(ids[i]).value=v);calculate()});
+    document.getElementById('reset').addEventListener('click',()=>{['35','5','1','0','5','8','0','0','25'].forEach((v,i)=>document.getElementById(ids[i]).value=v);calculate()});
     document.getElementById('copy').addEventListener('click',async e=>{const text=`算算·卖价计算结果\n建议售价：¥${document.getElementById('suggested').textContent}\n预计单件利润：${document.getElementById('profit').textContent}\n成本合计：${document.getElementById('totalCost').textContent}\n盈亏平衡售价：${document.getElementById('breakEven').textContent}`;try{await navigator.clipboard.writeText(text);e.currentTarget.textContent='已复制';setTimeout(()=>e.currentTarget.textContent='复制计算结果',1400)}catch{e.currentTarget.textContent='请手动复制';setTimeout(()=>e.currentTarget.textContent='复制计算结果',1400)}});
     calculate();
   </script>
