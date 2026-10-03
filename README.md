@@ -2,6 +2,8 @@
 
 免费在线商品定价计算器。输入商品成本、运费、包装耗材、平台费率、推广费率和目标利润率，估算建议售价、单件利润与盈亏平衡价。
 
+**立即使用：** https://sell-price-calculator.onrender.com
+
 ## 隐私与限制
 
 - 单页静态网页，无服务器端代码、数据库或外部 API。
@@ -13,4 +15,3 @@
 - Build command: 留空
 - Publish directory: `.`
 - Entry page: `index.html`
-
